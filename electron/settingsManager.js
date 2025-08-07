@@ -33,6 +33,7 @@ function loadSettings() {
         model: process.env.GROQ_DEFAULT_MODEL || "llama-3.3-70b-versatile",
         temperature: 0.7,
         top_p: 0.95,
+        reasoning_effort: 'medium',
         mcpServers: {},
         disabledMcpServers: [],
         customSystemPrompt: '',
@@ -63,6 +64,7 @@ function loadSettings() {
             settings.model = settings.model || defaultSettings.model;
             settings.temperature = settings.temperature ?? defaultSettings.temperature; // Use nullish coalescing
             settings.top_p = settings.top_p ?? defaultSettings.top_p;
+            settings.reasoning_effort = settings.reasoning_effort || defaultSettings.reasoning_effort;
             settings.mcpServers = settings.mcpServers || defaultSettings.mcpServers;
             settings.disabledMcpServers = settings.disabledMcpServers || defaultSettings.disabledMcpServers;
             settings.customSystemPrompt = settings.customSystemPrompt || defaultSettings.customSystemPrompt;

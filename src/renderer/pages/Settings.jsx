@@ -7,7 +7,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import { Badge } from '../components/ui/badge';
-import { Select } from '../components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import Switch from '../components/ui/Switch';
 
 function Settings() {
@@ -15,6 +15,7 @@ function Settings() {
     GROQ_API_KEY: '',
     temperature: 0.7,
     top_p: 0.95,
+    reasoning_effort: 'medium',
     mcpServers: {},
     disabledMcpServers: [],
     customSystemPrompt: '',
@@ -70,6 +71,9 @@ function Settings() {
                 browserSearch: false
             };
         }
+        if (!settingsData.reasoning_effort) {
+            settingsData.reasoning_effort = 'medium';
+        }
         setSettings(settingsData);
       } catch (error) {
         console.error('Error loading settings:', error);
@@ -89,7 +93,8 @@ function Settings() {
             builtInTools: {
                 codeInterpreter: false,
                 browserSearch: false
-            }
+            },
+            reasoning_effort: 'medium'
         }));
       }
     };
@@ -155,6 +160,12 @@ function Settings() {
     saveSettings(updatedSettings);
   };
 
+  const handleSelectChange = (name, value) => {
+    const updatedSettings = { ...settings, [name]: value };
+    setSettings(updatedSettings);
+    saveSettings(updatedSettings);
+  };
+
   const handleToggleChange = (name, checked) => {
     const updatedSettings = { ...settings, [name]: checked };
     setSettings(updatedSettings);
@@ -185,8 +196,7 @@ function Settings() {
     setNewMcpServer(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleTransportChange = (e) => {
-    const transportType = e.target.value;
+  const handleTransportChange = (transportType) => {
     setNewMcpServer(prev => ({
         ...prev,
         transport: transportType,
@@ -902,6 +912,30 @@ function Settings() {
                     </p>
                   </div>
                 </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <Label htmlFor="reasoning_effort">
+                      Reasoning Effort: <Badge variant="outline">{settings.reasoning_effort}</Badge>
+                    </Label>
+                    <Select
+                      value={settings.reasoning_effort}
+                      onValueChange={(value) => handleSelectChange('reasoning_effort', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select reasoning effort" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="low">Low</SelectItem>
+                        <SelectItem value="medium">Medium</SelectItem>
+                        <SelectItem value="high">High</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground">
+                      Controls reasoning depth for gpt-oss models (low: fast, high: more thorough)
+                    </p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
@@ -1095,14 +1129,17 @@ function Settings() {
                     <div className="space-y-2">
                       <Label htmlFor="transport">Transport Type</Label>
                       <Select
-                        id="transport"
-                        name="transport"
                         value={newMcpServer.transport}
-                        onChange={handleTransportChange}
+                        onValueChange={handleTransportChange}
                       >
-                        <option value="stdio">Stdio</option>
-                        <option value="sse">SSE</option>
-                        <option value="streamableHttp">Streamable HTTP</option>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select transport type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="stdio">Stdio</SelectItem>
+                          <SelectItem value="sse">SSE</SelectItem>
+                          <SelectItem value="streamableHttp">Streamable HTTP</SelectItem>
+                        </SelectContent>
                       </Select>
                     </div>
                   </div>

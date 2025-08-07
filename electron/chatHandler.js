@@ -113,7 +113,7 @@ function buildApiParams(prunedMessages, modelToUse, settings, tools, modelContex
         allTools.push(...builtInTools);
     }
 
-    return {
+    const apiParams = {
         messages: [{ role: "system", content: systemPrompt }, ...prunedMessages],
         model: modelToUse,
         temperature: settings.temperature ?? 0.7,
@@ -121,6 +121,14 @@ function buildApiParams(prunedMessages, modelToUse, settings, tools, modelContex
         ...(allTools.length > 0 && { tools: allTools, tool_choice: "auto" }),
         stream: true
     };
+
+    // Add reasoning_effort parameter for gpt-oss models
+    if (modelToUse.includes('gpt-oss') && settings.reasoning_effort) {
+        apiParams.reasoning_effort = settings.reasoning_effort;
+        console.log(`Adding reasoning_effort: ${settings.reasoning_effort} for model: ${modelToUse}`);
+    }
+
+    return apiParams;
 }
 
 // Processes individual stream chunks for compound-beta and regular models
