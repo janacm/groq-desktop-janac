@@ -5,6 +5,7 @@
 Groq Desktop features MCP server support for all function calling capable models hosted on Groq. Now available for Windows, macOS, and Linux!
 
 > **Note for macOS Users**: After installing on macOS, you may need to run this command to open the app:
+>
 > ```sh
 > xattr -c /Applications/Groq\ Desktop.app
 > ```
@@ -120,6 +121,7 @@ pnpm test:paths
 ```
 
 The testing scripts will check:
+
 - Platform detection
 - Script file resolution
 - Environment variable handling
@@ -136,4 +138,4 @@ In the settings page, add your Groq API key:
 }
 ```
 
-You can obtain a Groq API key by signing up at [https://console.groq.com](https://console.groq.com). 
+You can obtain a Groq API key by signing up at [https://console.groq.com](https://console.groq.com).

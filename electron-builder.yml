@@ -72,7 +72,7 @@ linux:
 publish:
   provider: github
   owner: groq
-  repo: groq-desktop-beta
+  repo: groq-desktop-janac
 
 # Make sure scripts are executable
 fileAssociations:
@@ -83,7 +83,7 @@ fileAssociations:
   - ext: cmd
     role: Command
     perMachine: true
-    isExecutable: true 
+    isExecutable: true
   - ext: ps1
     role: PowerShell
     perMachine: true
